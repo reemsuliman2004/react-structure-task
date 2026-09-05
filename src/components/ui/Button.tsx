@@ -1,22 +1,21 @@
-type ButtonProps = {
-  children: React.ReactNode
-  type?: 'button' | 'submit' | 'reset'
-  onClick?: () => void
+export type ButtonVariant = 'primary' | 'secondary' | 'danger'
+
+export type ButtonProps = {
+  text: string
+  onClick: () => void
+  variant: ButtonVariant
+  disabled?: boolean
 }
 
-export function Button({ children, type = 'button', onClick }: ButtonProps) {
+export function Button({ text, onClick, variant, disabled = false }: ButtonProps) {
   return (
-    <button type={type} onClick={onClick} style={{
-      padding: '0.7rem 1.1rem',
-      border: 'none',
-      borderRadius: '8px',
-      backgroundColor: '#2563eb',
-      color: '#fff',
-      cursor: 'pointer',
-      fontSize: '0.95rem',
-      fontWeight: 600,
-    }}>
-      {children}
+    <button
+      type="button"
+      className={`btn btn-${variant}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {text}
     </button>
   )
 }

@@ -1,55 +1,58 @@
-import { useEffect, useState } from 'react'
 import { Button } from '../components/ui/Button'
-import { Input } from '../components/ui/Input'
-import { LoadingSkeleton } from '../components/skeleton/LoadingSkeleton'
-import { EmptyState } from '../components/common/EmptyState'
-import { getUsers } from '../api/users.api'
-import type { User } from '../types/user.types'
-import { formatDate } from '../utils/formatDate'
+import { Card } from '../components/ui/Card'
+import { Table } from '../components/ui/Table'
+
+const products = [
+  { name: 'Laptop Pro', category: 'Electronics', stock: 18, status: 'In Stock' },
+  { name: 'Wireless Mouse', category: 'Accessories', stock: 42, status: 'In Stock' },
+  { name: 'Office Chair', category: 'Furniture', stock: 7, status: 'Low Stock' },
+  { name: 'Monitor 4K', category: 'Electronics', stock: 0, status: 'Out of Stock' },
+]
 
 export function Home() {
-  const [search, setSearch] = useState('')
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    getUsers().then((data) => {
-      setUsers(data)
-      setLoading(false)
-    })
-  }, [])
-
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(search.toLowerCase()),
-  )
-
   return (
-    <section className="page-box">
-      <h1>Home</h1>
-      <p>This is a simple example of a homepage.</p>
-
-      <div className="search-box">
-        <Input label="Search" value={search} placeholder="Type a name" onChange={setSearch} />
+    <section className="home-page">
+      <div className="page-header">
+        <p className="eyebrow">Reusable Components</p>
+        <h1>React UI Demo</h1>
+        <p>This page shows how a few simple components can be reused in different situations.</p>
       </div>
 
-      {loading ? (
-        <LoadingSkeleton />
-      ) : filteredUsers.length > 0 ? (
-        <div className="user-list">
-          {filteredUsers.map((user) => (
-            <div key={user.id} className="user-card">
-              <strong>{user.name}</strong>
-              <span>{user.email}</span>
-              <small>{formatDate(user.createdAt)}</small>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <EmptyState title="No users found" message="Please try another name." />
-      )}
+      <div className="button-demo">
+        <Button text="Primary Action" onClick={() => console.log('Primary clicked')} variant="primary" />
+        <Button text="Secondary Action" onClick={() => console.log('Secondary clicked')} variant="secondary" />
+        <Button text="Delete Item" onClick={() => console.log('Danger clicked')} variant="danger" />
+        <Button text="Disabled" onClick={() => console.log('Disabled button')} variant="primary" disabled />
+      </div>
 
-      <div className="button-row">
-        <Button onClick={() => setSearch('')}>Reset</Button>
+      <div className="card-grid">
+        <Card
+          title="Design System"
+          description="A consistent set of reusable UI pieces helps teams ship faster and more clearly."
+          image="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80"
+        >
+          <ul className="card-list">
+            <li>Simple and readable interface</li>
+            <li>Easy to update across the app</li>
+            <li>Consistent styling and behavior</li>
+          </ul>
+        </Card>
+
+        <Card
+          title="Product Launch"
+          description="This card demonstrates how content can vary while sharing the same layout and structure."
+        >
+          <div className="card-content-box">
+            <span className="tag">New Feature</span>
+            <p>Launch the campaign with a clear message and a strong call-to-action.</p>
+            <Button text="View Details" onClick={() => console.log('Details clicked')} variant="secondary" />
+          </div>
+        </Card>
+      </div>
+
+      <div className="table-section">
+        <h2>Products</h2>
+        <Table columns={['name', 'category', 'stock', 'status']} data={products} striped />
       </div>
     </section>
   )
